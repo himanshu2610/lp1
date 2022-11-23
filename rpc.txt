@@ -1,0 +1,72 @@
+package rpc_practice;
+import java.util.*;
+import java.io.*;
+import java.net.*;
+public class client_rpc {
+public static void main(String args[]) {
+	try {
+		Socket s = new Socket("localhost", 4000);
+		Scanner scn = new Scanner(System.in);
+		DataOutputStream dout = new DataOutputStream(s.getOutputStream());
+		System.out.println("Enter space seperated expression: ");
+		String st = scn.nextLine();
+		dout.writeUTF(st);
+		dout.flush();
+		
+		DataInputStream inpt = new DataInputStream(s.getInputStream());
+		String str = (String) inpt.readUTF();
+		System.out.println("Result : "+ str );
+		s.close();
+	}
+	catch(Exception e) {
+		System.out.println(e);
+	}
+
+}
+}
+
+// server
+/*
+import java.util.*;
+import java.io.*;
+import java.net.*;
+public class server_rpc {
+	public static void main(String args[]) {
+		try {
+			ServerSocket ss = new ServerSocket(4000);
+			Socket s = ss.accept();
+			DataInputStream dis = new DataInputStream(s.getInputStream());
+			DataOutputStream res = new DataOutputStream(s.getOutputStream());
+			String str = (String) dis.readUTF();
+			String ar[] = str.split(" ");
+			int l = ar.length;
+			int result = 0;
+			for(int i=0;i<l;i++) {
+				if(ar[1].charAt(0) == '+') {
+					result = Integer.parseInt(ar[0]) + Integer.parseInt(ar[2]);
+				}
+				else if(ar[1].charAt(0) == '-') {
+					result = Integer.parseInt(ar[0]) - Integer.parseInt(ar[2]);
+				}
+				else if(ar[1].charAt(0) == '*') {
+					result = Integer.parseInt(ar[0]) * Integer.parseInt(ar[2]);
+				}
+				else if(ar[1].charAt(0) == '/') {
+					result = Integer.parseInt(ar[0]) / Integer.parseInt(ar[2]);
+				}
+				else {
+					System.out.println("Enter valid expression");
+				}
+			}
+			System.out.println(result);
+			res.writeUTF(Integer.toString(result));
+			ss.close();
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
+		
+	}
+}
+
+ */
